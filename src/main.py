@@ -25,8 +25,10 @@ def get_worklog():
                                 '%Y-%m-%d').date()
     assignee = input("Enter username (e.g. john_smith): ")
 
-    jira = JIRA('https://{0}'.format(server),
-                basic_auth=(username, password))
+    if not server.startswith('http'):
+        server = 'https://' + server
+
+    jira = JIRA(server, basic_auth=(username, password))
     jql = 'timespent > 0 ORDER BY updated DESC'
     issues = jira.search_issues(jql)
 
